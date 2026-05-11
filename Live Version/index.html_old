@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Mobatech Holland B.V. is specialist in nieuwe en gebruikte houtbewerkingsmachines, onderhoud, storingsdienst, machinekeuringen en complete werkplaatsoplossingen." />
+    <title>Mobatech Holland B.V. | Houtbewerkingsmachines, onderhoud & montage</title>
+    <script type="module" crossorigin src="/assets/index-8Y5EkFoz.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DmOfTsp4.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
