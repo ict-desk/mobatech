@@ -14,8 +14,8 @@ Route::post('/contact', function (Request $request) {
         "Telefoon: " . $request->input('telefoon') . "\n\n" .
         "Bericht:\n" . $request->input('bericht'),
         function ($message) {
-           // $message->to('info@mobatech.nl')
-              $message->to('eric.zoons@gmail.com')
+            $message->to('info@mobatech.nl')
+           //   $message->to('eric.zoons@gmail.com')
                 ->subject('Nieuw bericht via Mobatech contactformulier');
         }
     );

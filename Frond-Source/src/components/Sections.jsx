@@ -205,7 +205,7 @@ export default function Sections() {
             <button type="submit" disabled={isSending}>
               {isSending ? 'Bezig met verzenden...' : 'Verstuur aanvraag'}
             </button>
-            <small>Formulier verzendt via eigen PHP endpoint. Als verzending faalt, gebruik tijdelijk telefoon of e-mail.</small>
+            
           </form>
         </div>
       </section>

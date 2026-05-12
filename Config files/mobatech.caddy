@@ -1,0 +1,11 @@
+mobatechholland.nl, www.mobatechholland.nl, 
+mobatech.nl, www.mobatech.nl {
+
+    root * /var/www/sites/mobatech/public
+
+    encode zstd gzip
+
+    php_fastcgi unix//run/php/php8.5-fpm.sock
+
+    file_server
+}
