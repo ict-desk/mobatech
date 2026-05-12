@@ -4,18 +4,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
+
 Route::post('/contact', function (Request $request) {
 
     Mail::raw(
-        "Naam: " . $request->input('name') . "\n" .
+        "Formulier: " . $request->input('form_name') . "\n" .
+        "Naam: " . $request->input('naam') . "\n" .
         "E-mail: " . $request->input('email') . "\n" .
-        "Telefoon: " . $request->input('phone') . "\n" .
-        "Bedrijf: " . $request->input('company') . "\n" .
-        "Onderwerp: " . $request->input('subject') . "\n\n" .
-        "Bericht:\n" . $request->input('message'),
+        "Telefoon: " . $request->input('telefoon') . "\n\n" .
+        "Bericht:\n" . $request->input('bericht'),
         function ($message) {
-            $message->to('eric.zoons@gmail.com')
-                ->subject('Nieuw bericht via contactformulier');
+           // $message->to('info@mobatech.nl')
+              $message->to('eric.zoons@gmail.com')
+                ->subject('Nieuw bericht via Mobatech contactformulier');
         }
     );
 
@@ -23,8 +24,9 @@ Route::post('/contact', function (Request $request) {
         'success' => true,
         'message' => 'Mail verzonden',
     ]);
-
 });
+
+
 
 /*
 |--------------------------------------------------------------------------

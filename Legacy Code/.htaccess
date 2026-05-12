@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Sta alleen 3 specifieke bestanden toe
+RewriteCond %{REQUEST_URI} !^/index\.php$
+RewriteCond %{REQUEST_URI} !^/index\.html$
+RewriteCond %{REQUEST_URI} !^/Image/placeholder\.jpg$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Alles anders -> redirect naar index.php
+RewriteRule ^.*$ /index.php [L]
