@@ -8,6 +8,7 @@ const navItems = [
   ['Service', '/#service'],
   ['Keuringen', '/#keuringen'],
   ['Onderdelen', '/#onderdelen'],
+  ['Te koop', '/te-koop'],
 ]
 
 export default function Header({ currentPage = 'home' }) {

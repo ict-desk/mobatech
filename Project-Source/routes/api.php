@@ -7,16 +7,24 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/contact', function (Request $request) {
 
+    $subject = $request->input('subject');
+
+    if (!$subject) {
+        $subject = 'Nieuw bericht via Mobatech contactformulier';
+    }
+
     Mail::raw(
         "Formulier: " . $request->input('form_name') . "\n" .
+        "Onderwerp: " . $subject . "\n" .
         "Naam: " . $request->input('naam') . "\n" .
         "E-mail: " . $request->input('email') . "\n" .
         "Telefoon: " . $request->input('telefoon') . "\n\n" .
         "Bericht:\n" . $request->input('bericht'),
-        function ($message) {
+        function ($message) use ($subject) {
+
             $message->to('info@mobatech.nl')
-           //   $message->to('eric.zoons@gmail.com')
-                ->subject('Nieuw bericht via Mobatech contactformulier');
+             // ->to('eric.zoons@gmail.com')
+                ->subject($subject);
         }
     );
 

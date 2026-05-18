@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const services = [
   ['Machines', 'Nieuwe en gebruikte houtbewerkingsmachines voor professionele werkplaatsen, van zaagmachines tot CNC-bewerkingscentra.'],
