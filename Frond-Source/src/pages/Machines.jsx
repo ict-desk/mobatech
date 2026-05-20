@@ -23,6 +23,9 @@ const machines = [
     material: "Hout",
     images: ["/machines/example-machine-1.jpg"],
     stockStatus: "op_voorraad",
+    listedAt: "2026-05-15",
+    isNewSticky: true,
+    featured: true,
     shortDescription:
       "Professionele zaagmachine voor nauwkeurig en betrouwbaar zaagwerk.",
     description:
@@ -51,6 +54,9 @@ const machines = [
     material: "Hout",
     images: ["/machines/example-machine-2.jpg"],
     stockStatus: "op_voorraad",
+    listedAt: "2026-05-10",
+    isNewSticky: false,
+    featured: true,
     shortDescription: "Formaatzaag voor professioneel gebruik.",
     description:
       "Nette gebruikte formaatzaag met sterke constructie en praktische bediening.",
@@ -82,6 +88,9 @@ const machines = [
       "/machines/example-machine-3-2.jpg",
     ],
     stockStatus: "op_voorraad",
+    listedAt: "2026-04-20",
+    isNewSticky: false,
+    featured: false,
     shortDescription: "CNC-bewerkingscentrum voor houtbewerking.",
     description:
       "CNC-machine geschikt voor seriematig werk en nauwkeurige bewerkingen.",
@@ -111,6 +120,22 @@ const machines = [
   },
 ];
 
+function isMachineNew(machine) {
+  if (machine.isNewSticky) {
+    return true;
+  }
+
+  if (!machine.listedAt) {
+    return false;
+  }
+
+  const listedDate = new Date(`${machine.listedAt}T00:00:00`);
+  const today = new Date();
+  const twoWeeksInMs = 14 * 24 * 60 * 60 * 1000;
+
+  return today.getTime() - listedDate.getTime() <= twoWeeksInMs;
+}
+
 function CategoryIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -125,23 +150,32 @@ export default function Machines() {
   const [selectedMachine, setSelectedMachine] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  const filteredMachines = selectedCategory
-    ? machines.filter(
-        (machine) =>
-          machine.category === selectedCategory &&
-          machine.stockStatus === "op_voorraad",
-      )
-    : [];
+  const visibleMachines = machines.filter(
+    (machine) => machine.stockStatus === "op_voorraad",
+  );
+
+  const featuredMachines = visibleMachines.filter((machine) => machine.featured);
+
+  const displayedMachines = selectedCategory
+    ? visibleMachines.filter((machine) => machine.category === selectedCategory)
+    : featuredMachines;
+
+  const sectionTitle = selectedCategory ? selectedCategory : "Uitgelicht aanbod";
+
+  const sectionIntro = selectedCategory
+    ? "Bekijk de beschikbare machines binnen deze categorie."
+    : "Een selectie uit het actuele aanbod.";
 
   const openMachine = (machine) => {
     setSelectedMachine(machine);
     setSelectedImage(machine.images[0]);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (selectedMachine) {
     return (
-      <main>
-        <section className="section section-soft">
+      <main className="machines-main">
+        <section className="section section-soft machines-section">
           <div className="container two-col machines-grid">
             <div>
               <button
@@ -150,13 +184,14 @@ export default function Machines() {
                 onClick={() => {
                   setSelectedMachine(null);
                   setSelectedImage(null);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
-                aria-label="Terug naar machine overzicht"
+                aria-label="Terug naar aanbod overzicht"
               >
                 ←
               </button>
 
-              <p className="eyebrow">Te koop</p>
+              <p className="eyebrow">Aanbod</p>
 
               <h1 className="machines-title">
                 <span>{selectedMachine.title}</span>
@@ -171,8 +206,6 @@ export default function Machines() {
                 <span>Bouwjaar: {selectedMachine.year}</span>
                 <span>Geschikt voor: {selectedMachine.material}</span>
               </div>
-
-          
             </div>
 
             <div className="category-box machine-detail-image-box">
@@ -203,15 +236,15 @@ export default function Machines() {
               }}
             />
 
-                <a
-                className="machine-interest-button"
-                href={`/#full-contact?subject=${encodeURIComponent(
-                  `Interesse in ${selectedMachine.title} - bouwjaar ${selectedMachine.year}`,
-                )}`}
-              >
-                <span>Ik heb interesse</span>
-                <span>in deze machine</span>
-              </a>
+            <a
+              className="machine-interest-button"
+              href={`/#full-contact?subject=${encodeURIComponent(
+                `Interesse in ${selectedMachine.title} - bouwjaar ${selectedMachine.year}`,
+              )}`}
+            >
+              <span>Ik heb interesse</span>
+              <span>in deze machine</span>
+            </a>
           </div>
         </section>
       </main>
@@ -219,100 +252,104 @@ export default function Machines() {
   }
 
   return (
-    <main>
-      <section className="section section-soft">
-        <div className="container two-col machines-grid">
-          <div>
-            <p className="eyebrow">Te koop</p>
+    <main className="machines-main">
+      <section className="section section-soft machines-section">
+        <div className="container">
+          <h1 className="machines-title machines-title-single">Actueel aanbod.</h1>
 
-            <h1 className="machines-title">
-              <span>Machines</span>
-              <span>op voorraad.</span>
-            </h1>
+          <p className="machines-intro">
+            Bekijk de actuele selectie nieuwe en gebruikte houtbewerkingsmachines.
+            Kies links een categorie of bekijk het uitgelichte aanbod.
+          </p>
 
-            <p>
-              Bekijk de actuele selectie nieuwe en gebruikte
-              houtbewerkingsmachines. Kies een categorie om de beschikbare
-              machines te tonen.
-            </p>
-          </div>
+          <div className="offer-layout">
+            <aside className="offer-sidebar">
+              <div className="category-box offer-sidebar-box">
+                <h3>Categorieën</h3>
 
-          <div className="category-box">
-            <h3>Machinecategorieën</h3>
+                <div className="category-sidebar-list">
+                  {categories.map((category) => (
+                    <button
+                      key={category}
+                      type="button"
+                      className={
+                        selectedCategory === category
+                          ? "category-choice active"
+                          : "category-choice"
+                      }
+                      onClick={() => {
+                        setSelectedCategory(category);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                    >
+                      <i>
+                        <CategoryIcon />
+                      </i>
 
-            <div className="category-grid category-grid-icons">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  type="button"
-                  className={
-                    selectedCategory === category
-                      ? "category-choice active"
-                      : "category-choice"
-                  }
-                  onClick={() => setSelectedCategory(category)}
-                >
-                  <i>
-                    <CategoryIcon />
-                  </i>
+                      <b>{category}</b>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </aside>
 
-                  <b>{category}</b>
-                </button>
-              ))}
-            </div>
+            <section className="offer-content" aria-live="polite">
+              <div className="offer-content-header">
+                <div>
+                  <h2>{sectionTitle}</h2>
+                  <p>{sectionIntro}</p>
+                </div>
+              </div>
+
+              {displayedMachines.length === 0 ? (
+                <div className="category-box">
+                  <p>
+                    Er zijn momenteel geen machines beschikbaar binnen deze selectie.
+                  </p>
+                </div>
+              ) : (
+                <div className="cards offer-cards">
+                  {displayedMachines.map((machine) => (
+                    <article className="card machine-card" key={machine.id}>
+                      <button
+                        type="button"
+                        className="machine-card-image-button"
+                        onClick={() => openMachine(machine)}
+                      >
+                        <img src={machine.images[0]} alt={machine.title} />
+                      </button>
+
+                      {isMachineNew(machine) && (
+                        <span className="machine-new-badge">Nieuw</span>
+                      )}
+
+                      <h3>{machine.title}</h3>
+
+                      <p>{machine.shortDescription}</p>
+
+                      <p>
+                        <strong>Merk:</strong> {machine.brand}
+                        <br />
+                        <strong>Bouwjaar:</strong> {machine.year}
+                        <br />
+                        <strong>Conditie:</strong> {machine.condition}
+                      </p>
+
+                      <button
+                        type="button"
+                        className="panel-link panel-link-button"
+                        onClick={() => openMachine(machine)}
+                      >
+                        Bekijk machine <span>→</span>
+                      </button>
+                    </article>
+                  ))}
+                </div>
+              )}
+            </section>
           </div>
         </div>
       </section>
-
-      {selectedCategory && (
-        <section className="section">
-          <div className="container">
-            <p className="eyebrow">Beschikbaar</p>
-
-            <h2>Machines in categorie: {selectedCategory}</h2>
-
-            {filteredMachines.length === 0 ? (
-              <p>
-                Er zijn momenteel geen machines op voorraad in deze categorie.
-              </p>
-            ) : (
-              <div className="cards">
-                {filteredMachines.map((machine) => (
-                  <article className="card machine-card" key={machine.id}>
-                    <button
-                      type="button"
-                      className="machine-card-image-button"
-                      onClick={() => openMachine(machine)}
-                    >
-                      <img src={machine.images[0]} alt={machine.title} />
-                    </button>
-
-                    <h3>{machine.title}</h3>
-
-                    <p>{machine.shortDescription}</p>
-
-                    <p>
-                      <strong>Merk:</strong> {machine.brand}
-                      <br />
-                      <strong>Bouwjaar:</strong> {machine.year}
-                      <br />
-                      <strong>Conditie:</strong> {machine.condition}
-                    </p>
-
-                    <button
-                      type="button"
-                      className="panel-link panel-link-button"
-                      onClick={() => openMachine(machine)}
-                    >
-                      Bekijk machine <span>→</span>
-                    </button>
-                  </article>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
-      )}
     </main>
   );
 }

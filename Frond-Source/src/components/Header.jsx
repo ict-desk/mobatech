@@ -8,30 +8,37 @@ const navItems = [
   ['Service', '/#service'],
   ['Keuringen', '/#keuringen'],
   ['Onderdelen', '/#onderdelen'],
-  ['Te koop', '/te-koop'],
+  ['Aanbod', '/aanbod'],
 ]
 
 export default function Header({ currentPage = 'home' }) {
   const [open, setOpen] = useState(false)
   const [contactOpen, setContactOpen] = useState(false)
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    })
+  }
+
   return (
     <header className="site-header">
       <div className="header-inner">
-        <a href="/#home" className="brand" aria-label="Mobatech Holland home">
+        <a href="/#home" className="brand" aria-label="Mobatech Holland home" onClick={scrollToTop}>
           <img src="/logo-header.png" alt="Mobatech Holland B.V." />
         </a>
 
         <nav className="desktop-nav" aria-label="Hoofdnavigatie">
-          {navItems.map(([label, href]) => <a key={label} href={href}>{label}</a>)}
+          {navItems.map(([label, href]) => <a key={label} href={href} onClick={scrollToTop}>{label}</a>)}
           <div className="nav-dropdown">
             <button className="nav-dropdown-button" type="button" onClick={() => setContactOpen(!contactOpen)} aria-expanded={contactOpen}>
               Contact <span>⌄</span>
             </button>
             {contactOpen && (
               <div className="nav-dropdown-menu">
-                <a href="/#contact" onClick={() => setContactOpen(false)}>Contact</a>
-                <a href="/#vacatures" onClick={() => setContactOpen(false)}>Vacatures</a>
+                <a href="/#contact" onClick={() => { scrollToTop(); setContactOpen(false) }}>Contact</a>
+                <a href="/#vacatures" onClick={() => { scrollToTop(); setContactOpen(false) }}>Vacatures</a>
               </div>
             )}
           </div>
@@ -49,10 +56,10 @@ export default function Header({ currentPage = 'home' }) {
       {open && (
         <nav className="mobile-nav" aria-label="Mobiele navigatie">
           {navItems.map(([label, href]) => (
-            <a key={label} href={href} onClick={() => setOpen(false)}>{label}</a>
+            <a key={label} href={href} onClick={() => { scrollToTop(); setOpen(false) }}>{label}</a>
           ))}
-          <a href="/#contact" onClick={() => setOpen(false)}>Contact</a>
-          <a href="/#vacatures" onClick={() => setOpen(false)}>Vacatures</a>
+          <a href="/#contact" onClick={() => { scrollToTop(); setOpen(false) }}>Contact</a>
+          <a href="/#vacatures" onClick={() => { scrollToTop(); setOpen(false) }}>Vacatures</a>
           <a href="tel:+31412450425" className="mobile-call" onClick={() => setOpen(false)}>Bel direct</a>
         </nav>
       )}

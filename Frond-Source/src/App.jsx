@@ -28,8 +28,8 @@ function getRoute() {
     };
   }
 
-  if (path.startsWith("/te-koop") || hash === "te-koop") {
-    return { page: "te-koop", target: "" };
+  if (path.startsWith("/aanbod") || hash === "aanbod") {
+    return { page: "aanbod", target: "" };
   }
 
   if (hash === "full-contact" || hash.startsWith("full-contact?")) {
@@ -43,6 +43,13 @@ export default function App() {
   const [route, setRoute] = useState(getRoute());
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [route.page, route.target]);
+
+  useEffect(() => {
     const update = () => setRoute(getRoute());
     window.addEventListener("popstate", update);
     window.addEventListener("hashchange", update);
@@ -52,18 +59,8 @@ export default function App() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!route.target) return;
-    const timer = setTimeout(() => {
-      document
-        .getElementById(route.target)
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 120);
-    return () => clearTimeout(timer);
-  }, [route]);
-
-  const isVacatures = route.page === "vacatures";
-  const isTeKoop = route.page === "te-koop";
+const isVacatures = route.page === "vacatures";
+  const isAanbod = route.page === "aanbod";
   const isFullContact = route.page === "full-contact";
 
   return (
@@ -72,7 +69,7 @@ export default function App() {
       <main>
         {isVacatures ? (
           <Vacatures />
-        ) : isTeKoop ? (
+        ) : isAanbod ? (
           <Machines />
         ) : isFullContact ? (
           <section className="section contact-section">

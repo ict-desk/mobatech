@@ -23,6 +23,7 @@ Route::post('/contact', function (Request $request) {
         function ($message) use ($subject) {
 
             $message->to('info@mobatech.nl')
+              ->cc('john.van.de.weerd@mobatechholland.nl') // extra copie aan john
              // ->to('eric.zoons@gmail.com')
                 ->subject($subject);
         }

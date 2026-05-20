@@ -37,3 +37,11 @@ https://dev.mobatech.nl/bpanel
 demo login
 admin@mobatech.nl
 Mb#2026!
+
+
+DB_CONNECTION=mysql
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=Bpanel_Mobatech_Dev
+DB_USERNAME=Mobatech
+DB_PASSWORD="MOdev#26xPAPS!"

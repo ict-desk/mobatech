@@ -7,28 +7,23 @@ use Illuminate\Support\Facades\Route;
 require __DIR__ . '/bpanel_auth.php';
 
 Route::get('/', function () {
-
     if (Auth::check()) {
         return redirect()->route('bpanel.dashboard');
     }
 
     return redirect()->route('login');
-
 })->name('bpanel.index');
 
 Route::middleware('auth')->group(function () {
-
     Route::get('/dashboard', function () {
         return view('bpanel.dashboard');
     })->name('bpanel.dashboard');
 
     /*
-    |--------------------------------------------------------------------------
-    | Machines
-    |--------------------------------------------------------------------------
-    */
-
-    Route::resource('machines', MachineController::class);
+     * |--------------------------------------------------------------------------
+     * | Machines
+     * |--------------------------------------------------------------------------
+     */
 
     Route::get('/machines/{machine}/copy', [MachineController::class, 'copy'])
         ->name('machines.copy');
@@ -36,4 +31,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/machines/{machine}/delete', [MachineController::class, 'delete'])
         ->name('machines.delete');
 
+    Route::resource('machines', MachineController::class);
 });

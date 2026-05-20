@@ -3,7 +3,9 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="container footer-inner">
         <div className="footer-brand">
+          <a href="/bpanel">
           <img src="/logo-full.png" alt="Mobatech Holland B.V." />
+          </a>
         </div>
         <div className="footer-text">
           <strong>Mobatech Holland B.V.</strong>

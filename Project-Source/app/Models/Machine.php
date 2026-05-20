@@ -7,16 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 class Machine extends Model
 {
     protected $fillable = [
+        //text
         'title',
-        'category',
-        'brand',
-        'condition',
-        'year',
-        'material',
-        'stock_status',
         'short_description',
         'description',
         'extra_info',
+        //combobox string
+        'brand',
+        'category',
+        'condition',
+        'material',
+        'year',
+        //combobox string
+        'stock_status',
+        //boolean
         'is_active',
+        'is_featured',
     ];
 }
