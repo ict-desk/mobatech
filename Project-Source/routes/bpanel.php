@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\Bpanel\MachineController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-require __DIR__.'/bpanel_auth.php';
+require __DIR__ . '/bpanel_auth.php';
 
 Route::get('/', function () {
 
@@ -20,5 +21,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('bpanel.dashboard');
     })->name('bpanel.dashboard');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Machines
+    |--------------------------------------------------------------------------
+    */
+
+    Route::resource('machines', MachineController::class);
+
+    Route::get('/machines/{machine}/copy', [MachineController::class, 'copy'])
+        ->name('machines.copy');
+
+    Route::get('/machines/{machine}/delete', [MachineController::class, 'delete'])
+        ->name('machines.delete');
 
 });

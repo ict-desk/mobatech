@@ -1,0 +1,39 @@
+
+dev.mobatech.nl
+Demo
+DemoMT#9Xx
+hash : $2a$14$5l9.QNyFvpAceV2oha6ZyeP9P1xFcVfjA4Jt/ztOr.TL5BNah1VtK
+
+
+
+demo db
+Mb#2026!Panel
+
+
+CREATE DATABASE IF NOT EXISTS `Bpanel_Mobatech_Dev`
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
+CREATE USER IF NOT EXISTS 'Mobatech'@'localhost'
+IDENTIFIED BY 'Mb#2026!Panel';
+
+GRANT ALL PRIVILEGES ON `Bpanel_Mobatech_Dev`.* 
+TO 'Mobatech'@'localhost';
+
+FLUSH PRIVILEGES;
+
+EXIT;
+
+php artisan tinker
+
+User::create([
+    'name' => 'Admin',
+    'email' => 'admin@mobatech.nl',
+    'password' => bcrypt('Mb#2026!'),
+]);
+
+https://dev.mobatech.nl/bpanel
+
+demo login
+admin@mobatech.nl
+Mb#2026!
