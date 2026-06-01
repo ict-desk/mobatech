@@ -1,0 +1,21 @@
+[
+    {
+        "id": 2,
+        "title": "Altendorf F45",
+        "product_code": "geenssss",
+        "category": "Zagen",
+        "brand": "Altendorf",
+        "condition": "Gebruikt",
+        "year": "2019",
+        "material": "Hout",
+        "stock_status": "op_voorraad",
+        "short_description": "Formaatzaag voor professioneel gebruik.",
+        "description": "Nette gebruikte formaatzaag met sterke constructie en praktische bediening.",
+        "extra_info": "<h3>Extra informatie<\/h3><p>Deze machine verkeert in nette staat en is direct inzetbaar.<\/p><ul><li>380V aansluiting<\/li><li>Transport mogelijk<\/li><li>Meer foto's op aanvraag<\/li><\/ul>",
+        "is_active": 1,
+        "is_featured": 1,
+        "created_at": "2026-05-19T13:57:34.000000Z",
+        "updated_at": "2026-05-27T12:05:54.000000Z",
+        "images": ["\/storage\/machines\/geenssss\/nice women look.png"]
+    }
+]

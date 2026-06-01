@@ -1,16 +1,16 @@
 # =========================================================
-# Insulinde React -> Laravel Build Script
+# React -> Laravel Build Script
 # =========================================================
 
 $root = "C:\Project-List\mobatech"
 
-$frontend = "$root\Frond-Source"
-$laravel = "$root\Project-Source"
+$frontend = "$root\React-Source"
+$laravel = "$root\Laravel-Source"
 $laravelPublic = "$laravel\public"
 
 Write-Host ""
 Write-Host "========================================="
-Write-Host " INSULINDE BUILD SCRIPT"
+Write-Host " React -> Laravel Build Script"
 Write-Host "========================================="
 Write-Host ""
 
