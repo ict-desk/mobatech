@@ -8,19 +8,63 @@ use App\Http\Controllers\Api\V0\MachineApiController;
 
 Route::post('/contact', function (Request $request) {
 
-    $subject = $request->input('subject');
+    /*
+     * |--------------------------------------------------------------------------
+     * | Laag 1 - Honeypot
+     * |--------------------------------------------------------------------------
+     * | Het veld 'website' staat verborgen in het formulier (.hp-field).
+     * | Een mens ziet het nooit, een bot vult het bijna altijd in.
+     * | Bij een treffer geven we een nep-succes terug, zodat de bot niet
+     * | met een andere variant terugkomt.
+     */
+
+    if (filled($request->input('website'))) {
+        return response()->json([
+            'success' => true,
+            'message' => 'Mail verzonden',
+        ]);
+    }
+
+    /*
+     * |--------------------------------------------------------------------------
+     * | Laag 2 - Validatie
+     * |--------------------------------------------------------------------------
+     * | De teksten hieronder komen letterlijk in beeld bij de bezoeker,
+     * | dus in het Nederlands en zonder technische termen.
+     */
+
+    $data = $request->validate([
+        'naam'      => ['required', 'string', 'max:120'],
+        'email'     => ['required', 'email', 'max:180'],
+        'telefoon'  => ['nullable', 'string', 'max:80'],
+        'bericht'   => ['required', 'string', 'min:10', 'max:5000'],
+        'subject'   => ['nullable', 'string', 'max:200'],
+        'form_name' => ['nullable', 'string', 'max:120'],
+    ], [
+        'naam.required'    => 'Vul uw naam in.',
+        'naam.max'         => 'Uw naam is te lang.',
+        'email.required'   => 'Vul uw e-mailadres in.',
+        'email.email'      => 'Dit e-mailadres klopt niet.',
+        'email.max'        => 'Uw e-mailadres is te lang.',
+        'telefoon.max'     => 'Uw telefoonnummer is te lang.',
+        'bericht.required' => 'Vul uw bericht in.',
+        'bericht.min'      => 'Uw bericht is te kort. Schrijf minimaal 10 tekens.',
+        'bericht.max'      => 'Uw bericht is te lang.',
+    ]);
+
+    $subject = $data['subject'] ?? null;
 
     if (!$subject) {
         $subject = 'Nieuw bericht via Mobatech contactformulier';
     }
 
     Mail::raw(
-        "Formulier: " . $request->input('form_name') . "\n" .
+        "Formulier: " . ($data['form_name'] ?? '-') . "\n" .
         "Onderwerp: " . $subject . "\n" .
-        "Naam: " . $request->input('naam') . "\n" .
-        "E-mail: " . $request->input('email') . "\n" .
-        "Telefoon: " . $request->input('telefoon') . "\n\n" .
-        "Bericht:\n" . $request->input('bericht'),
+        "Naam: " . $data['naam'] . "\n" .
+        "E-mail: " . $data['email'] . "\n" .
+        "Telefoon: " . ($data['telefoon'] ?? '-') . "\n\n" .
+        "Bericht:\n" . $data['bericht'],
         function ($message) use ($subject) {
 
             $message->to('info@mobatech.nl')
@@ -34,7 +78,16 @@ Route::post('/contact', function (Request $request) {
         'success' => true,
         'message' => 'Mail verzonden',
     ]);
-});
+
+/*
+ * |--------------------------------------------------------------------------
+ * | Laag 3 - Throttle
+ * |--------------------------------------------------------------------------
+ * | Max 3 berichten per uur per IP-adres. Strenger zetten kan door
+ * | het eerste getal te verlagen, bijvoorbeeld throttle:1,60.
+ */
+
+})->middleware('throttle:3,60');
 
 /*
 |--------------------------------------------------------------------------

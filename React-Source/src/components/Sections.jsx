@@ -49,6 +49,10 @@ export default function Sections() {
       if (response.ok && result.success) {
         setContactMessage('Bedankt, uw aanvraag is verzonden. Wij nemen zo snel mogelijk contact met u op.')
         form.reset()
+      } else if (response.status === 429) {
+        setContactMessage('U heeft kort achter elkaar meerdere berichten verstuurd. Probeer het over een uur nog eens of bel ons op +31 (0) 412 450 425.')
+      } else if (result.message) {
+        setContactMessage(result.message)
       } else {
         setContactMessage('Verzenden is niet gelukt. Probeer het later opnieuw of neem telefonisch contact op.')
       }

@@ -45,3 +45,7 @@ DB_PORT=3306
 DB_DATABASE=Bpanel_Mobatech_Dev
 DB_USERNAME=Mobatech
 DB_PASSWORD="MOdev#26xPAPS!"
+
+
+cd C:\Project-List\mobatech\React-Source && rm package-lock.json
+cd C:\Project-List\mobatech\React-Source && npm install
